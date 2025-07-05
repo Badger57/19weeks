@@ -4,128 +4,220 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>19Weeks - Weight Loss Tracker</title>
+  <title>19Weeks – Weight Loss Tracker</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background: #f4f4f4;
       margin: 0;
       padding: 2rem;
-      background: #f4f4f4;
+      color: #333;
     }
-    h1, h2 {
+    h1, h2, h3 {
       text-align: center;
     }
-    .section {
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
       background: white;
-      padding: 1rem;
-      margin: 1rem auto;
-      border-radius: 8px;
-      max-width: 800px;
+      padding: 1rem 2rem;
+      border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
+    label {
+      display: block;
+      margin: 0.5rem 0 0.2rem;
     }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 0.5rem;
-      text-align: center;
+    input[type="number"] {
+      width: 80px;
     }
-    input[type="number"], input[type="checkbox"] {
-      transform: scale(1.2);
+    .days input {
+      margin-right: 8px;
     }
     .button {
       margin-top: 1rem;
       padding: 0.5rem 1rem;
       font-size: 1rem;
+      background: #444;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      margin-top: 1rem;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 0.4rem;
+      text-align: center;
+    }
+    .k-colour { color: rebeccapurple; font-weight: bold; }
+    .t-colour { color: orange; font-weight: bold; }
+    .countdown {
+      text-align: center;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: #c62828;
     }
   </style>
 </head>
 <body>
 
-  <h1>19Weeks - Weight Loss Tracker</h1>
+  <h1>19Weeks – Weight Loss Tracker</h1>
+  <p class="countdown" id="countdown"></p>
 
-  <div class="section">
+  <div class="container">
     <h2>Enter Weekly Data</h2>
-    <form id="logForm">
-      <label for="week">Week (1-19):</label>
-      <input type="number" id="week" min="1" max="19" required><br><br>
+    <form id="weekForm">
+      <label>Week (1–19): <input type="number" id="week" min="1" max="19" required></label>
 
-      <h3>Player K</h3>
-      <label>Weight (kg): <input type="number" id="kWeight" step="0.1"></label><br>
-      <label><input type="checkbox" id="kExercise"> 3× Exercise</label><br>
-      <label><input type="checkbox" id="kSteps"> 10,000+ steps/day (Mon-Thu)</label><br>
-      <label><input type="checkbox" id="kDog"> Dog walking 30 min (Mon-Thu)</label><br>
-      <label><input type="checkbox" id="kNoAlcohol"> No alcohol (Mon-Thu)</label><br><br>
+      <h3 class="k-colour">Player K</h3>
+      <label>Weight (kg): <input type="number" step="0.1" id="kWeight"></label>
+      <label>Exercise done? <input type="checkbox" id="kExercise"></label>
+      <div class="days">Steps: <input type="checkbox" value="Mon" class="kSteps">
+        <input type="checkbox" value="Tue" class="kSteps">
+        <input type="checkbox" value="Wed" class="kSteps">
+        <input type="checkbox" value="Thu" class="kSteps">
+      </div>
+      <div class="days">Dog Walk: <input type="checkbox" value="Mon" class="kDog">
+        <input type="checkbox" value="Tue" class="kDog">
+        <input type="checkbox" value="Wed" class="kDog">
+        <input type="checkbox" value="Thu" class="kDog">
+      </div>
+      <div class="days">No Alcohol: <input type="checkbox" value="Mon" class="kAlcohol">
+        <input type="checkbox" value="Tue" class="kAlcohol">
+        <input type="checkbox" value="Wed" class="kAlcohol">
+        <input type="checkbox" value="Thu" class="kAlcohol">
+      </div>
 
-      <h3>Player T</h3>
-      <label>Weight (kg): <input type="number" id="tWeight" step="0.1"></label><br>
-      <label><input type="checkbox" id="tExercise"> 3× Exercise</label><br>
-      <label><input type="checkbox" id="tSteps"> 10,000+ steps/day (Mon-Thu)</label><br>
-      <label><input type="checkbox" id="tDog"> Dog walking 30 min (Mon-Thu)</label><br>
-      <label><input type="checkbox" id="tNoAlcohol"> No alcohol (Mon-Thu)</label><br><br>
+      <h3 class="t-colour">Player T</h3>
+      <label>Weight (kg): <input type="number" step="0.1" id="tWeight"></label>
+      <label>Exercise done? <input type="checkbox" id="tExercise"></label>
+      <div class="days">Steps: <input type="checkbox" value="Mon" class="tSteps">
+        <input type="checkbox" value="Tue" class="tSteps">
+        <input type="checkbox" value="Wed" class="tSteps">
+        <input type="checkbox" value="Thu" class="tSteps">
+      </div>
+      <div class="days">Dog Walk: <input type="checkbox" value="Mon" class="tDog">
+        <input type="checkbox" value="Tue" class="tDog">
+        <input type="checkbox" value="Wed" class="tDog">
+        <input type="checkbox" value="Thu" class="tDog">
+      </div>
+      <div class="days">No Alcohol: <input type="checkbox" value="Mon" class="tAlcohol">
+        <input type="checkbox" value="Tue" class="tAlcohol">
+        <input type="checkbox" value="Wed" class="tAlcohol">
+        <input type="checkbox" value="Thu" class="tAlcohol">
+      </div>
 
       <button type="submit" class="button">Submit Week</button>
     </form>
-  </div>
 
-  <div class="section">
     <h2>Leaderboard</h2>
-    <table id="leaderboard">
+    <table>
       <thead>
         <tr><th>Player</th><th>Total Points</th></tr>
       </thead>
       <tbody>
-        <tr><td>K</td><td id="kPoints">0</td></tr>
-        <tr><td>T</td><td id="tPoints">0</td></tr>
+        <tr><td class="k-colour">K</td><td id="kPoints">0</td></tr>
+        <tr><td class="t-colour">T</td><td id="tPoints">0</td></tr>
       </tbody>
     </table>
+
+    <h2>Weight Progress</h2>
+    <canvas id="weightChart" height="100"></canvas>
   </div>
 
-  <script>
-    let kStart = 88.6;
-    let tStart = 102.9;
-    let kPoints = 0;
-    let tPoints = 0;
+<script>
+  const startWeights = { K: 88.6, T: 102.9 };
+  const points = { K: 0, T: 0 };
+  const weightData = { K: [], T: [], labels: [] };
 
-    document.getElementById("logForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+  const ctx = document.getElementById('weightChart').getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: weightData.labels,
+      datasets: [
+        { label: 'K', data: weightData.K, borderColor: 'rebeccapurple', fill: false },
+        { label: 'T', data: weightData.T, borderColor: 'orange', fill: false }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: false } }
+    }
+  });
 
-      const kW = parseFloat(document.getElementById("kWeight").value);
-      const tW = parseFloat(document.getElementById("tWeight").value);
+  function updateCountdown() {
+    const end = new Date("2025-11-17");
+    const now = new Date();
+    const diff = end - now;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    document.getElementById("countdown").textContent = days + " days remaining";
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 86400000);
 
-      let kWeekPoints = 0;
-      let tWeekPoints = 0;
+  document.getElementById("weekForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const week = parseInt(document.getElementById("week").value);
+    if (!week || week < 1 || week > 19) return;
 
-      if (document.getElementById("kExercise").checked) kWeekPoints += 1;
-      if (document.getElementById("kSteps").checked) kWeekPoints += 1;
-      if (document.getElementById("kDog").checked) kWeekPoints += 1;
-      if (document.getElementById("kNoAlcohol").checked) kWeekPoints += 1;
-      if (kW < kStart) kWeekPoints += 1;
-      if (kW > kStart) kWeekPoints -= 1;
+    const getPoints = (player, weightId, classPrefix) => {
+      let pts = 0;
+      const weight = parseFloat(document.getElementById(weightId).value);
+      const prev = parseFloat(localStorage.getItem(player + "_lastWeight")) || startWeights[player];
+      if (weight < prev) pts++;
+      if (weight > prev) pts--;
+      if (document.getElementById(classPrefix + "Exercise").checked) pts++;
+      pts += document.querySelectorAll("." + classPrefix + "Steps:checked").length;
+      pts += document.querySelectorAll("." + classPrefix + "Dog:checked").length;
+      pts += document.querySelectorAll("." + classPrefix + "Alcohol:checked").length;
 
-      if (document.getElementById("tExercise").checked) tWeekPoints += 1;
-      if (document.getElementById("tSteps").checked) tWeekPoints += 1;
-      if (document.getElementById("tDog").checked) tWeekPoints += 1;
-      if (document.getElementById("tNoAlcohol").checked) tWeekPoints += 1;
-      if (tW < tStart) tWeekPoints += 1;
-      if (tW > tStart) tWeekPoints -= 1;
+      localStorage.setItem(player + "_lastWeight", weight);
+      weightData[player].push(weight);
+      return pts;
+    };
 
-      kPoints += kWeekPoints;
-      tPoints += tWeekPoints;
+    const kPts = getPoints("K", "kWeight", "k");
+    const tPts = getPoints("T", "tWeight", "t");
 
-      document.getElementById("kPoints").textContent = kPoints;
-      document.getElementById("tPoints").textContent = tPoints;
+    points.K += kPts;
+    points.T += tPts;
+    weightData.labels.push("Week " + week);
 
-      kStart = kW;
-      tStart = tW;
+    document.getElementById("kPoints").textContent = points.K;
+    document.getElementById("tPoints").textContent = points.T;
 
-      alert("Week submitted! Points updated.");
-      document.getElementById("logForm").reset();
-    });
-  </script>
+    chart.update();
+    localStorage.setItem("points_K", points.K);
+    localStorage.setItem("points_T", points.T);
+    localStorage.setItem("weights_K", JSON.stringify(weightData.K));
+    localStorage.setItem("weights_T", JSON.stringify(weightData.T));
+    localStorage.setItem("labels", JSON.stringify(weightData.labels));
 
+    document.getElementById("weekForm").reset();
+  });
+
+  // Restore data
+  window.onload = () => {
+    points.K = parseInt(localStorage.getItem("points_K")) || 0;
+    points.T = parseInt(localStorage.getItem("points_T")) || 0;
+    weightData.K = JSON.parse(localStorage.getItem("weights_K")) || [];
+    weightData.T = JSON.parse(localStorage.getItem("weights_T")) || [];
+    weightData.labels = JSON.parse(localStorage.getItem("labels")) || [];
+
+    document.getElementById("kPoints").textContent = points.K;
+    document.getElementById("tPoints").textContent = points.T;
+
+    chart.data.labels = weightData.labels;
+    chart.data.datasets[0].data = weightData.K;
+    chart.data.datasets[1].data = weightData.T;
+    chart.update();
+  };
+</script>
 </body>
 </html>
